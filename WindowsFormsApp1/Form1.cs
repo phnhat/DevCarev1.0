@@ -127,7 +127,7 @@ namespace WindowsFormsApp1
         }
 
         //Exit
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
@@ -189,6 +189,7 @@ namespace WindowsFormsApp1
                 if (comboBox1.SelectedIndex == comboBox1.Items.Count - 6) reminder = 15;
             }
         }
+
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (checkBox1.Checked)
@@ -197,6 +198,20 @@ namespace WindowsFormsApp1
                 if (comboBox3.SelectedIndex == comboBox3.Items.Count - 2) interval = 15;
                 if (comboBox3.SelectedIndex == comboBox3.Items.Count - 3) interval = 10;
                 if (comboBox3.SelectedIndex == comboBox3.Items.Count - 4) interval = 5;
+            }
+        }
+
+        //Closing 
+        private void Form1_FormClosing_1(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                this.Hide();
+                e.Cancel = true;
+            }
+            else if (e.CloseReason == CloseReason.ApplicationExitCall)
+            {
+                Application.Exit();
             }
         }
 
@@ -320,14 +335,23 @@ namespace WindowsFormsApp1
         {
             switch (e.Mode)
             {
-                case PowerModes.Resume:  t.Start();
+                case PowerModes.Resume:
+                    {
+                        t.Start();
+                    }
                     break;
-                case PowerModes.Suspend: t.Stop();
+                case PowerModes.Suspend:
+                    {
+                        t.Stop();
+                        if (t2.Enabled)
+                        {
+                            t2.Stop();
+                            button3.Text = "Continue";
+                        }
+                    }
                     break;
             }
-        }
-
-        
+        }   
 
     }
 }
