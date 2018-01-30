@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -55,12 +56,19 @@ namespace WindowsFormsApp1
             }
         }
 
+        // Kiểm tra quyền admin
+        public static bool IsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
         //Nút Start
         private void button1_Click(object sender, EventArgs e)
         {
             if(checkBox3.Checked)
             {
-                File.AppendAllText(@"C:\Windows\System32\drivers\etc\hosts", "\r\n0.0.0.0 www.facebook.com" + Environment.NewLine);
+                File.AppendAllText(@"C:\Windows\System32\drivers\etc\hosts", "0.0.0.0 www.facebook.com" + Environment.NewLine);
             }
             checkBox3.Enabled = false;
             if (comboBox2.SelectedIndex == comboBox2.Items.Count - 1) hourt2 = 2;
@@ -129,6 +137,7 @@ namespace WindowsFormsApp1
         //Exit
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            if (t2.Enabled && checkBox3.Checked) DeleteLastLine(@"C:\Windows\System32\drivers\etc\hosts");
             Application.Exit();
         }
 
@@ -143,7 +152,11 @@ namespace WindowsFormsApp1
             comboBox1.SelectedIndex = comboBox1.Items.Count - 4;
             comboBox2.SelectedIndex = comboBox2.Items.Count - 3;
             comboBox3.SelectedIndex = comboBox2.Items.Count - 3;
-
+            if (IsAdministrator())
+            {
+                checkBox3.Enabled = true;
+            }
+            else checkBox3.Enabled = false;
         }
 
         //show Window khi right click
