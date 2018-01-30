@@ -106,7 +106,7 @@ namespace WindowsFormsApp1
                 {
                     DeleteLastLine(@"C:\Windows\System32\drivers\etc\hosts");
                 }
-                checkBox3.Enabled = true;
+                if (IsAdministrator()) checkBox3.Enabled = true;
             }
             else if (dialogResult == DialogResult.No)
             {
@@ -319,7 +319,7 @@ namespace WindowsFormsApp1
                         {
                             DeleteLastLine(@"C:\Windows\System32\drivers\etc\hosts");
                         }
-                        checkBox3.Enabled = true;
+                        if (IsAdministrator()) checkBox3.Enabled = true;
                         MessageBox.Show("This is the end of Deep Work Session! Chill and have a cup of tea <3.", "DevCare_v1.0", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, (MessageBoxOptions)0x40000);
                     }
                     else
